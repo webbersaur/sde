@@ -498,6 +498,27 @@ tabs.forEach(tab => {
 
 // Initial render
 renderRestaurants();
+
+// Auto-resize iframe - send height to parent
+function sendHeight() {
+  const height = document.body.scrollHeight;
+  window.parent.postMessage({ type: 'resize', height: height }, '*');
+}
+
+// Send height on load and after filter changes
+window.addEventListener('load', () => {
+  setTimeout(sendHeight, 100);
+});
+
+// Update renderRestaurants to send height after rendering
+const originalRender = renderRestaurants;
+renderRestaurants = function(filter) {
+  originalRender(filter);
+  setTimeout(sendHeight, 50);
+};
+
+// Also send on resize
+window.addEventListener('resize', sendHeight);
 </script>
 
 </body>
