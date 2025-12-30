@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Branford Restaurants | Shop Dine Explore Branford</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --warm-cream: #FDF8F3;
+      --deep-navy: #1B2838;
+      --coastal-blue: #4A7C8E;
+      --sunset-coral: #E07A5F;
+      --sage-green: #7D9B76;
+      --golden-hour: #D4A853;
+      --soft-gray: #9BA3A9;
+      --white: #FFFFFF;
+      --wine-burgundy: #722F37;
+    }
+
+    body {
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--warm-cream);
+      color: var(--deep-navy);
+      line-height: 1.6;
+    }
+
+    .restaurant-filter-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .filter-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .filter-header h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .filter-header p {
+      font-size: 1.1rem;
+      color: var(--soft-gray);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .cuisine-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 40px;
+      padding: 0 10px;
+    }
+
+    .cuisine-tab {
+      padding: 12px 24px;
+      border: none;
+      background: var(--white);
+      color: var(--deep-navy);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 50px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 8px rgba(27, 40, 56, 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cuisine-tab::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, var(--coastal-blue), var(--sage-green));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 0;
+    }
+
+    .cuisine-tab span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cuisine-tab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(74, 124, 142, 0.2);
+    }
+
+    .cuisine-tab.active {
+      color: var(--white);
+    }
+
+    .cuisine-tab.active::before {
+      opacity: 1;
+    }
+
+    .restaurant-count {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+      color: var(--soft-gray);
+    }
+
+    .restaurant-count strong {
+      color: var(--coastal-blue);
+      font-weight: 600;
+    }
+
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .restaurant-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(27, 40, 56, 0.04);
+    }
+
+    .restaurant-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--coastal-blue), var(--sage-green), var(--golden-hour));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .restaurant-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(27, 40, 56, 0.1);
+    }
+
+    .restaurant-card:hover::before {
+      opacity: 1;
+    }
+
+    .restaurant-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--deep-navy);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .restaurant-cuisine {
+      display: inline-block;
+      padding: 6px 14px;
+      background: linear-gradient(135deg, rgba(74, 124, 142, 0.1), rgba(125, 155, 118, 0.1));
+      color: var(--coastal-blue);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    .restaurant-phone {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .restaurant-phone a {
+      color: var(--coastal-blue);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .restaurant-phone a:hover {
+      color: var(--sunset-coral);
+    }
+
+    .restaurant-phone svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--soft-gray);
+    }
+
+    /* Cuisine-specific accent colors */
+    .restaurant-card[data-cuisine="Italian"] .restaurant-cuisine {
+      background: linear-gradient(135deg, rgba(224, 122, 95, 0.15), rgba(212, 168, 83, 0.1));
+      color: var(--sunset-coral);
+    }
+
+    .restaurant-card[data-cuisine="Mexican"] .restaurant-cuisine {
+      background: linear-gradient(135deg, rgba(212, 168, 83, 0.15), rgba(224, 122, 95, 0.1));
+      color: #C4842D;
+    }
+
+    .restaurant-card[data-cuisine="Indian"] .restaurant-cuisine {
+      background: linear-gradient(135deg, rgba(224, 122, 95, 0.15), rgba(212, 168, 83, 0.15));
+      color: #B85C3A;
+    }
+
+    .restaurant-card[data-cuisine="Thai"] .restaurant-cuisine {
+      background: linear-gradient(135deg, rgba(125, 155, 118, 0.15), rgba(212, 168, 83, 0.1));
+      color: var(--sage-green);
+    }
+
+    .restaurant-card[data-cuisine="Chinese"] .restaurant-cuisine {
+      background: linear-gradient(135deg, rgba(224, 82, 82, 0.12), rgba(212, 168, 83, 0.1));
+      color: #C44545;
+    }
+
+    .restaurant-card[data-cuisine="Seafood"] .restaurant-cuisine {
+      background: linear-gradient(135deg, rgba(74, 124, 142, 0.15), rgba(125, 155, 118, 0.1));
+      color: var(--coastal-blue);
+    }
+
+    .restaurant-card[data-cuisine="Greek"] .restaurant-cuisine {
+      background: linear-gradient(135deg, rgba(74, 124, 142, 0.12), rgba(255, 255, 255, 0.1));
+      color: #3A6A8A;
+    }
+
+    .restaurant-card[data-cuisine="Japanese"] .restaurant-cuisine {
+      background: linear-gradient(135deg, rgba(220, 53, 69, 0.12), rgba(255, 255, 255, 0.1));
+      color: #C41E3A;
+    }
+
+    .restaurant-card[data-cuisine="Wine Bar"] .restaurant-cuisine {
+      background: linear-gradient(135deg, rgba(114, 47, 55, 0.15), rgba(212, 168, 83, 0.1));
+      color: var(--wine-burgundy);
+    }
+
+    .restaurant-card[data-cuisine="Italian & Mexican"] .restaurant-cuisine {
+      background: linear-gradient(135deg, rgba(224, 122, 95, 0.15), rgba(212, 168, 83, 0.15));
+      color: #C4842D;
+    }
+
+    .restaurant-card {
+      animation: fadeInUp 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .restaurant-card:nth-child(1) { animation-delay: 0.02s; }
+    .restaurant-card:nth-child(2) { animation-delay: 0.04s; }
+    .restaurant-card:nth-child(3) { animation-delay: 0.06s; }
+    .restaurant-card:nth-child(4) { animation-delay: 0.08s; }
+    .restaurant-card:nth-child(5) { animation-delay: 0.1s; }
+    .restaurant-card:nth-child(6) { animation-delay: 0.12s; }
+    .restaurant-card:nth-child(7) { animation-delay: 0.14s; }
+    .restaurant-card:nth-child(8) { animation-delay: 0.16s; }
+    .restaurant-card:nth-child(9) { animation-delay: 0.18s; }
+    .restaurant-card:nth-child(10) { animation-delay: 0.2s; }
+    .restaurant-card:nth-child(n+11) { animation-delay: 0.22s; }
+
+    @media (max-width: 768px) {
+      .restaurant-filter-container {
+        padding: 24px 16px;
+      }
+
+      .cuisine-tabs {
+        gap: 8px;
+      }
+
+      .cuisine-tab {
+        padding: 10px 18px;
+        font-size: 0.875rem;
+      }
+
+      .restaurant-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .restaurant-card {
+        padding: 22px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .cuisine-tab {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="restaurant-filter-container">
+  <header class="filter-header">
+    <h2>Discover Local Dining</h2>
+    <p>Explore Branford's vibrant culinary scene, from coastal seafood to international flavors</p>
+  </header>
+
+  <div class="cuisine-tabs" role="tablist" aria-label="Filter by cuisine type">
+    <button class="cuisine-tab active" data-filter="all" role="tab" aria-selected="true">
+      <span>All</span>
+    </button>
+    <button class="cuisine-tab" data-filter="American" role="tab" aria-selected="false">
+      <span>American</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Italian" role="tab" aria-selected="false">
+      <span>Italian</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Mexican" role="tab" aria-selected="false">
+      <span>Mexican</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Indian" role="tab" aria-selected="false">
+      <span>Indian</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Chinese" role="tab" aria-selected="false">
+      <span>Chinese</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Thai" role="tab" aria-selected="false">
+      <span>Thai</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Japanese" role="tab" aria-selected="false">
+      <span>Japanese</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Seafood" role="tab" aria-selected="false">
+      <span>Seafood</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Greek" role="tab" aria-selected="false">
+      <span>Greek</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Cafe" role="tab" aria-selected="false">
+      <span>Café & Bakery</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Pizza" role="tab" aria-selected="false">
+      <span>Pizza</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Wine Bar" role="tab" aria-selected="false">
+      <span>Wine Bar</span>
+    </button>
+    <button class="cuisine-tab" data-filter="Fast Food" role="tab" aria-selected="false">
+      <span>Fast Food</span>
+    </button>
+  </div>
+
+  <div class="restaurant-count">
+    Showing <strong id="count">62</strong> restaurants
+  </div>
+
+  <div class="restaurant-grid" id="restaurantGrid">
+    <!-- Cards will be injected by JavaScript -->
+  </div>
+</div>
+
+<script>
+const restaurants = [
+  { name: "1928 Cocktail Club", cuisine: "Wine Bar", phone: "203-530-1600" },
+  { name: "9 East Hibachi & Asian Kitchen", cuisine: "Japanese", phone: "203-488-8833" },
+  { name: "Archie Moore's", cuisine: "American", phone: "203-481-6100" },
+  { name: "Arturo's Restaurant", cuisine: "Italian & Mexican", phone: "203-208-4106" },
+  { name: "Branford Beach Donut", cuisine: "Cafe", phone: "203-208-0625" },
+  { name: "Branford Pizza", cuisine: "Pizza", phone: "203-481-7609" },
+  { name: "Breakfast Connections", cuisine: "American", phone: "203-488-8898" },
+  { name: "Cafe Fiore", cuisine: "Italian", phone: "203-208-4690" },
+  { name: "China Garden", cuisine: "Chinese", phone: "203-488-8861" },
+  { name: "Common Grounds", cuisine: "Cafe", phone: "203-488-2326" },
+  { name: "Darbar India", cuisine: "Indian", phone: "203-481-8994" },
+  { name: "Dockside Seafood & Grill", cuisine: "Seafood", phone: "203-488-3007" },
+  { name: "Doma on Main", cuisine: "Italian", phone: "203-208-0828" },
+  { name: "Domino's", cuisine: "Pizza", phone: "203-488-6200" },
+  { name: "Donut Crazy", cuisine: "Cafe", phone: "203-488-7911" },
+  { name: "Drea's by Goodfellas", cuisine: "Italian", phone: "203-483-5599" },
+  { name: "Dunkin'", cuisine: "Cafe", phone: "203-481-1434" },
+  { name: "Eli's on the Hill", cuisine: "American", phone: "203-488-2700" },
+  { name: "Four Seasons Market", cuisine: "American", phone: "203-483-4466" },
+  { name: "G Cafe Bakery", cuisine: "Cafe", phone: "203-488-9996" },
+  { name: "Genaro's Restaurant & Pizza", cuisine: "Italian", phone: "203-483-9397" },
+  { name: "Grey Goat Farmtique", cuisine: "American", phone: "203-315-7227" },
+  { name: "Guacamole's Mexican Cuisine", cuisine: "Mexican", phone: "203-481-4060" },
+  { name: "GW Carson's", cuisine: "American", phone: "203-208-1469" },
+  { name: "Home Restaurant Branford", cuisine: "American", phone: "203-483-5896" },
+  { name: "Honeyspot Pizza Branford", cuisine: "Pizza", phone: "203-481-3354" },
+  { name: "Hornet's Nest Deli", cuisine: "American", phone: "203-488-0717" },
+  { name: "IL Forno Restaurant", cuisine: "Italian", phone: "203-315-0024" },
+  { name: "Indian Neck Pizza", cuisine: "Pizza", phone: "203-488-2996" },
+  { name: "Jalapeño Heaven", cuisine: "Mexican", phone: "203-315-7336" },
+  { name: "Jersey Mike's Subs", cuisine: "Fast Food", phone: "203-208-1444" },
+  { name: "Kamana Indian Cuisine", cuisine: "Indian", phone: "203-689-5728" },
+  { name: "Kampai Japanese Restaurant", cuisine: "Japanese", phone: "203-481-4536" },
+  { name: "La Luna Ristorante", cuisine: "Italian", phone: "203-483-9995" },
+  { name: "La Monaco's", cuisine: "Italian", phone: "203-481-1120" },
+  { name: "Lenny's Indian Head Inn", cuisine: "Seafood", phone: "203-488-1500" },
+  { name: "Little Riggs", cuisine: "American", phone: "203-499-7930" },
+  { name: "Lockworks Tavern", cuisine: "American", phone: "860-331-8861" },
+  { name: "Longley's", cuisine: "American", phone: "203-488-5553" },
+  { name: "Marco Pizzeria", cuisine: "Pizza", phone: "203-481-5551" },
+  { name: "McDonald's", cuisine: "Fast Food", phone: "203-481-3011" },
+  { name: "Nellie's", cuisine: "Seafood", phone: "203-208-0013" },
+  { name: "P&M Fine Foods", cuisine: "Italian", phone: "203-488-7485" },
+  { name: "Pacileo's Apizza & Pasta", cuisine: "Pizza", phone: "203-481-5930" },
+  { name: "Parthenon Diner Restaurant", cuisine: "Greek", phone: "203-481-0333" },
+  { name: "Pasta Cosi", cuisine: "Italian", phone: "203-483-9397" },
+  { name: "Pearl Wine Bar", cuisine: "Wine Bar", phone: "203-208-1329" },
+  { name: "Rosso Vino", cuisine: "Italian", phone: "203-483-5599" },
+  { name: "Rossitto's Ristorante", cuisine: "Italian", phone: "203-483-9463" },
+  { name: "Saltbrick Prime", cuisine: "American", phone: "860-200-3763" },
+  { name: "Shoreline Cafe and Catering", cuisine: "American", phone: "203-481-4400" },
+  { name: "SIAM Orchids Restaurant", cuisine: "Thai", phone: "203-483-6993" },
+  { name: "Sky Diner", cuisine: "American", phone: "203-315-7077" },
+  { name: "Stand", cuisine: "American", phone: "203-488-3354" },
+  { name: "Stony Creek Market", cuisine: "American", phone: "203-488-0145" },
+  { name: "Subway", cuisine: "Fast Food", phone: "203-488-6902" },
+  { name: "Taco Bell", cuisine: "Fast Food", phone: "203-483-8801" },
+  { name: "Tasty Yolk", cuisine: "American", phone: "203-488-2100" },
+  { name: "The Thimbleberry", cuisine: "American", phone: "203-315-7222" },
+  { name: "Tommy Sullivan's Cafe", cuisine: "American", phone: "203-488-2229" },
+  { name: "Townhouse Restaurant", cuisine: "American", phone: "203-481-0550" },
+  { name: "Willoughby's Coffee and Tea", cuisine: "Cafe", phone: "203-481-1700" }
+];
+
+const grid = document.getElementById('restaurantGrid');
+const countEl = document.getElementById('count');
+const tabs = document.querySelectorAll('.cuisine-tab');
+
+const phoneIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`;
+
+function renderRestaurants(filter = 'all') {
+  const filtered = filter === 'all' 
+    ? restaurants 
+    : restaurants.filter(r => r.cuisine === filter || r.cuisine.includes(filter));
+  
+  countEl.textContent = filtered.length;
+  
+  grid.innerHTML = filtered.map(r => `
+    <article class="restaurant-card" data-cuisine="${r.cuisine}">
+      <h3 class="restaurant-name">${r.name}</h3>
+      <span class="restaurant-cuisine">${r.cuisine}</span>
+      <div class="restaurant-phone">
+        ${phoneIcon}
+        <a href="tel:${r.phone.replace(/-/g, '')}">${r.phone}</a>
+      </div>
+    </article>
+  `).join('');
+}
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    renderRestaurants(tab.dataset.filter);
+  });
+});
+
+// Initial render
+renderRestaurants();
+</script>
+
+</body>
+</html>
