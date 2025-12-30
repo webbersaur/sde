@@ -786,6 +786,7 @@ function renderRestaurants() {
 searchInput.addEventListener('input', (e) => {
   currentSearch = e.target.value;
   renderRestaurants();
+  setTimeout(sendHeight, 50);
 });
 
 tabs.forEach(tab => {
@@ -798,11 +799,23 @@ tabs.forEach(tab => {
     tab.setAttribute('aria-selected', 'true');
     currentFilter = tab.dataset.filter;
     renderRestaurants();
+    setTimeout(sendHeight, 50);
   });
 });
 
+// Auto-resize iframe - send height to parent
+function sendHeight() {
+  const height = document.body.scrollHeight;
+  window.parent.postMessage({ type: 'resize', height: height }, '*');
+}
+
 // Initial render
 renderRestaurants();
+
+// Send height on load and window resize
+window.addEventListener('load', () => setTimeout(sendHeight, 100));
+window.addEventListener('resize', sendHeight);
+setTimeout(sendHeight, 150);
 </script>
 
 </body>
