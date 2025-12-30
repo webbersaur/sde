@@ -321,6 +321,52 @@
         font-size: 0.8rem;
       }
     }
+
+    .search-container {
+      position: relative;
+      max-width: 400px;
+      margin: 0 auto 30px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 14px 20px 14px 50px;
+      border: none;
+      background: var(--white);
+      border-radius: 50px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      color: var(--deep-navy);
+      box-shadow: 0 4px 16px rgba(27, 40, 56, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      box-shadow: 0 6px 24px rgba(74, 124, 142, 0.2);
+    }
+
+    .search-input::placeholder {
+      color: var(--soft-gray);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      color: var(--soft-gray);
+      pointer-events: none;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--soft-gray);
+      font-size: 1.1rem;
+    }
   </style>
 </head>
 <body>
@@ -330,6 +376,11 @@
     <h2>Discover Local Dining</h2>
     <p>Explore Branford's vibrant culinary scene, from coastal seafood to international flavors</p>
   </header>
+
+  <div class="search-container">
+    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+    <input type="text" id="searchInput" class="search-input" placeholder="Search restaurants..." aria-label="Search restaurants">
+  </div>
 
   <div class="cuisine-tabs" role="tablist" aria-label="Filter by cuisine type">
     <button class="cuisine-tab active" data-filter="all" role="tab" aria-selected="true">
@@ -462,16 +513,34 @@ const restaurants = [
 const grid = document.getElementById('restaurantGrid');
 const countEl = document.getElementById('count');
 const tabs = document.querySelectorAll('.cuisine-tab');
+const searchInput = document.getElementById('searchInput');
+
+let currentFilter = 'all';
+let currentSearch = '';
 
 const phoneIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`;
 
-function renderRestaurants(filter = 'all') {
-  const filtered = filter === 'all' 
-    ? restaurants 
-    : restaurants.filter(r => r.cuisine === filter || r.cuisine.includes(filter));
-  
+function renderRestaurants() {
+  let filtered = restaurants;
+
+  // Filter by cuisine
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(r => r.cuisine === currentFilter || r.cuisine.includes(currentFilter));
+  }
+
+  // Filter by search
+  if (currentSearch) {
+    const search = currentSearch.toLowerCase();
+    filtered = filtered.filter(r => r.name.toLowerCase().includes(search));
+  }
+
   countEl.textContent = filtered.length;
-  
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="no-results">No restaurants found. Try a different search or filter.</div>';
+    return;
+  }
+
   grid.innerHTML = filtered.map(r => `
     <article class="restaurant-card" data-cuisine="${r.cuisine}">
       <h3 class="restaurant-name">${r.name}</h3>
@@ -484,6 +553,13 @@ function renderRestaurants(filter = 'all') {
   `).join('');
 }
 
+// Search input handler
+searchInput.addEventListener('input', (e) => {
+  currentSearch = e.target.value;
+  renderRestaurants();
+  setTimeout(sendHeight, 50);
+});
+
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
     tabs.forEach(t => {
@@ -492,12 +568,11 @@ tabs.forEach(tab => {
     });
     tab.classList.add('active');
     tab.setAttribute('aria-selected', 'true');
-    renderRestaurants(tab.dataset.filter);
+    currentFilter = tab.dataset.filter;
+    renderRestaurants();
+    setTimeout(sendHeight, 50);
   });
 });
-
-// Initial render
-renderRestaurants();
 
 // Auto-resize iframe - send height to parent
 function sendHeight() {
@@ -505,20 +580,13 @@ function sendHeight() {
   window.parent.postMessage({ type: 'resize', height: height }, '*');
 }
 
-// Send height on load and after filter changes
-window.addEventListener('load', () => {
-  setTimeout(sendHeight, 100);
-});
+// Initial render
+renderRestaurants();
 
-// Update renderRestaurants to send height after rendering
-const originalRender = renderRestaurants;
-renderRestaurants = function(filter) {
-  originalRender(filter);
-  setTimeout(sendHeight, 50);
-};
-
-// Also send on resize
+// Send height on load and window resize
+window.addEventListener('load', () => setTimeout(sendHeight, 100));
 window.addEventListener('resize', sendHeight);
+setTimeout(sendHeight, 150);
 </script>
 
 </body>
