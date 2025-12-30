@@ -540,9 +540,183 @@
       line-height: 1.8;
       margin-bottom: 16px;
     }
+
+    /* Site Header */
+    .site-header {
+      background: var(--white);
+      border-bottom: 1px solid rgba(27, 40, 56, 0.08);
+      position: relative;
+      z-index: 100;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-logo img {
+      height: 60px;
+      width: auto;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link {
+      color: #000;
+      text-decoration: none;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 10px 14px;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: #2ea3f2;
+    }
+
+    .nav-link.active {
+      color: #dba634;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 14px;
+      right: 14px;
+      height: 2px;
+      background: #dba634;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .social-link {
+      color: var(--soft-gray);
+      transition: color 0.2s ease;
+    }
+
+    .social-link:hover {
+      color: #2ea3f2;
+    }
+
+    .social-link svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Mobile menu */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      color: var(--deep-navy);
+    }
+
+    .mobile-menu-toggle svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .main-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        gap: 0;
+      }
+
+      .main-nav.open {
+        display: flex;
+      }
+
+      .nav-link {
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        width: 100%;
+      }
+
+      .nav-link.active::after {
+        display: none;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .social-links {
+        display: none;
+      }
+
+      .header-container {
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .site-logo img {
+        height: 45px;
+      }
+    }
   </style>
 </head>
 <body>
+
+<header class="site-header">
+  <div class="header-container">
+    <a href="https://shopdineexplorebranford.com" class="site-logo">
+      <img src="https://shopdineexplorebranford.com/wp-content/uploads/2024/01/SDE-Web.png" alt="Shop Dine Explore Branford">
+    </a>
+
+    <button class="mobile-menu-toggle" aria-label="Toggle menu" onclick="document.querySelector('.main-nav').classList.toggle('open')">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+    <nav class="main-nav">
+      <a href="https://shopdineexplorebranford.com" class="nav-link">Home</a>
+      <a href="https://shopdineexplorebranford.com/shopping-in-branford-ct/" class="nav-link">Shop</a>
+      <a href="https://shopdineexplorebranford.com/dining-in-branford-ct/" class="nav-link active">Dine</a>
+      <a href="https://shopdineexplorebranford.com/explore-branford-ct/" class="nav-link">Explore</a>
+      <a href="https://shopdineexplorebranford.com/events/" class="nav-link">Events</a>
+      <a href="https://shopdineexplorebranford.com/about-shop-dine-explore-branford/" class="nav-link">About</a>
+      <a href="https://shopdineexplorebranford.com/contact-us/" class="nav-link">Contact</a>
+    </nav>
+
+    <div class="social-links">
+      <a href="https://www.facebook.com/branfordtown/" target="_blank" class="social-link" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/branford_ct/" target="_blank" class="social-link" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
 
 <div class="restaurant-filter-container">
   <header class="filter-header">
