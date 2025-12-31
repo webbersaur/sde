@@ -1022,6 +1022,15 @@ function renderRestaurants() {
 searchInput.addEventListener('input', (e) => {
   currentSearch = e.target.value;
   renderRestaurants();
+
+  // Hide featured section when searching
+  const featuredSection = document.querySelector('.featured-section');
+  if (currentSearch) {
+    featuredSection.style.display = 'none';
+  } else {
+    featuredSection.style.display = 'block';
+  }
+
   setTimeout(sendHeight, 50);
 });
 
