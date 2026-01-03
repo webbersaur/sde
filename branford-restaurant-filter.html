@@ -861,6 +861,9 @@
     <button class="cuisine-tab" data-filter="Thai" role="tab" aria-selected="false">
       <span>Thai</span>
     </button>
+    <button class="cuisine-tab" data-filter="Vietnamese" role="tab" aria-selected="false">
+      <span>Vietnamese</span>
+    </button>
     <button class="cuisine-tab" data-filter="Japanese" role="tab" aria-selected="false">
       <span>Japanese</span>
     </button>
@@ -885,7 +888,7 @@
   </div>
 
   <div class="restaurant-count">
-    Showing <strong id="count">73</strong> restaurants
+    Showing <strong id="count">91</strong> restaurants
   </div>
 
   <div class="restaurant-grid" id="restaurantGrid">
@@ -922,12 +925,18 @@ const restaurants = [
   { name: "9 East Hibachi & Asian Kitchen", cuisine: "Japanese", phone: "203-488-8833" },
   { name: "Archie Moore's", cuisine: "American", phone: "203-481-6100" },
   { name: "Arturo's Restaurant", cuisine: "Italian & Mexican", phone: "203-208-4106" },
+  { name: "Benny J's Pizza", cuisine: "Pizza", phone: "203-208-2409" },
+  { name: "Branford Cue & Brew", cuisine: "American", phone: "203-483-1388" },
   { name: "Branford Beach Donut", cuisine: "Cafe", phone: "203-208-0625" },
   { name: "Branford Pizza", cuisine: "Pizza", phone: "203-481-7609" },
   { name: "Breakfast Connections", cuisine: "American", phone: "203-488-8898" },
   { name: "Brother's Deli & Pizzeria", cuisine: "Pizza", phone: "203-481-2433" },
+  { name: "Bui Vietnamese Cuisine", cuisine: "Vietnamese", phone: "860-643-5006" },
+  { name: "Burger King", cuisine: "Fast Food", phone: "203-208-2816" },
   { name: "Cafe Fiore", cuisine: "Italian", phone: "203-208-4690" },
+  { name: "Capone's Pizza Bar", cuisine: "Pizza", phone: "203-488-2900" },
   { name: "China Garden", cuisine: "Chinese", phone: "203-488-8861" },
+  { name: "Chipotle Mexican Grill", cuisine: "Mexican", phone: "203-315-1506" },
   { name: "Common Grounds", cuisine: "Cafe", phone: "203-488-2326" },
   { name: "Crostini", cuisine: "American", phone: "203-488-1040" },
   { name: "Darbar India", cuisine: "Indian", phone: "203-481-8994" },
@@ -939,10 +948,13 @@ const restaurants = [
   { name: "Drea's by Goodfellas", cuisine: "Italian", phone: "203-483-5599" },
   { name: "Dunkin'", cuisine: "Cafe", phone: "203-481-1434" },
   { name: "Eli's on the Hill", cuisine: "American", phone: "203-488-2700" },
+  { name: "Five Guys Burgers & Fries", cuisine: "Fast Food", phone: "203-208-4167" },
   { name: "Four Seasons Market", cuisine: "American", phone: "203-483-4466" },
   { name: "Fresh Greens & Proteins", cuisine: "American", phone: "203-208-4398" },
   { name: "G Cafe Bakery", cuisine: "Cafe", phone: "203-488-9996" },
+  { name: "G&P Pizza Deli Convenience", cuisine: "Pizza", phone: "475-310-0161" },
   { name: "Genaro's Restaurant & Pizza", cuisine: "Italian", phone: "203-483-9397" },
+  { name: "Geovanny's Deli", cuisine: "American", phone: "203-208-2267" },
   { name: "Grey Goat Farmtique", cuisine: "American", phone: "203-315-7227" },
   { name: "Guacamole's Mexican Cuisine", cuisine: "Mexican", phone: "203-481-4060" },
   { name: "Gourmet Wok", cuisine: "Chinese", phone: "203-481-7988" },
@@ -954,6 +966,7 @@ const restaurants = [
   { name: "Indian Neck Pizza", cuisine: "Pizza", phone: "203-488-2996" },
   { name: "Jalapeño Heaven", cuisine: "Mexican", phone: "203-315-7336" },
   { name: "Jersey Mike's Subs", cuisine: "Fast Food", phone: "203-208-1444" },
+  { name: "Jerry-San's Sushi", cuisine: "Japanese", phone: "203-208-2169" },
   { name: "Kamana Indian Cuisine", cuisine: "Indian", phone: "203-689-5728" },
   { name: "Kampai Japanese Restaurant", cuisine: "Japanese", phone: "203-481-4536" },
   { name: "La Luna Ristorante", cuisine: "Italian", phone: "203-483-9995" },
@@ -961,11 +974,13 @@ const restaurants = [
   { name: "Lenny's Indian Head Inn", cuisine: "Seafood", phone: "203-488-1500" },
   { name: "Little Riggs", cuisine: "American", phone: "203-499-7930" },
   { name: "Little Pub", cuisine: "American", phone: "203-208-4289" },
+  { name: "Lion City Chinese Restaurant", cuisine: "Chinese", phone: "203-481-7474" },
   { name: "Lockworks Tavern", cuisine: "American", phone: "860-331-8861" },
   { name: "Longley's", cuisine: "American", phone: "203-488-5553" },
   { name: "Marco Pizzeria", cuisine: "Pizza", phone: "203-481-5551" },
   { name: "Mi Bella Restaurante", cuisine: "Italian", phone: "203-208-4102" },
   { name: "McDonald's", cuisine: "Fast Food", phone: "203-481-3011" },
+  { name: "Meadow Restaurant / Eel Pot", cuisine: "Seafood", phone: "203-315-9351" },
   { name: "NEBCO Branford", cuisine: "American", phone: "203-208-4525" },
   { name: "Nellie's", cuisine: "Seafood", phone: "203-208-0013" },
   { name: "Nonna Gina's", cuisine: "Italian", phone: "203-896-5700" },
@@ -976,20 +991,26 @@ const restaurants = [
   { name: "Pasta Cosi", cuisine: "Italian", phone: "203-483-9397" },
   { name: "Pearl Wine Bar", cuisine: "Wine Bar", phone: "203-208-1329" },
   { name: "Perkatory Coffee Roasters", cuisine: "Cafe", phone: "203-208-0600" },
+  { name: "Popeye's", cuisine: "Fast Food", phone: "203-481-0301" },
   { name: "Rosso Vino", cuisine: "Italian", phone: "203-483-5599" },
   { name: "Rossitto's Ristorante", cuisine: "Italian", phone: "203-483-9463" },
   { name: "Saltbrick Prime", cuisine: "American", phone: "860-200-3763" },
   { name: "Shoreline Cafe and Catering", cuisine: "American", phone: "203-481-4400" },
+  { name: "Shoreline Prime Meats & Deli", cuisine: "American", phone: "203-208-1579" },
   { name: "SIAM Orchids Restaurant", cuisine: "Thai", phone: "203-483-6993" },
   { name: "Sky Diner", cuisine: "American", phone: "203-315-7077" },
   { name: "Stand", cuisine: "American", phone: "203-488-3354" },
   { name: "Stony Creek Market", cuisine: "American", phone: "203-488-0145" },
   { name: "Subway", cuisine: "Fast Food", phone: "203-488-6902" },
+  { name: "Sushi Burrific", cuisine: "Japanese", phone: "203-208-4918" },
   { name: "Taco Bell", cuisine: "Fast Food", phone: "203-483-8801" },
+  { name: "Takumi Sushi Ramen & Lounge", cuisine: "Japanese", phone: "203-208-1207" },
   { name: "Tasty Yolk", cuisine: "American", phone: "203-488-2100" },
+  { name: "The Coffee Bean", cuisine: "Cafe", phone: "203-208-4154" },
   { name: "The Thimbleberry", cuisine: "American", phone: "203-315-7222" },
   { name: "Tommy Sullivan's Cafe", cuisine: "American", phone: "203-488-2229" },
   { name: "Townhouse Restaurant", cuisine: "Greek", phone: "203-481-0550" },
+  { name: "Wendy's", cuisine: "Fast Food", phone: "203-488-9136" },
   { name: "Willoughby's Coffee and Tea", cuisine: "Cafe", phone: "203-481-1700" }
 ];
 
