@@ -263,6 +263,11 @@
       color: #C4842D;
     }
 
+    .restaurant-card[data-cuisine="Confections"] .restaurant-cuisine {
+      background: linear-gradient(135deg, rgba(219, 112, 147, 0.15), rgba(255, 182, 193, 0.1));
+      color: #C44D78;
+    }
+
     .restaurant-card {
       animation: fadeInUp 0.5s ease forwards;
       opacity: 0;
@@ -875,7 +880,7 @@
       <span>Greek</span>
     </button>
     <button class="cuisine-tab" data-filter="Cafe" role="tab" aria-selected="false">
-      <span>Café & Bakery</span>
+      <span>Café, Bakery & Confections</span>
     </button>
     <button class="cuisine-tab" data-filter="Pizza" role="tab" aria-selected="false">
       <span>Pizza</span>
@@ -889,7 +894,7 @@
   </div>
 
   <div class="restaurant-count">
-    Showing <strong id="count">91</strong> restaurants
+    Showing <strong id="count">93</strong> restaurants
   </div>
 
   <div class="restaurant-grid" id="restaurantGrid">
@@ -924,6 +929,7 @@
 const restaurants = [
   { name: "1928 Cocktail Club", cuisine: "Wine Bar", phone: "203-530-1600" },
   { name: "9 East Hibachi & Asian Kitchen", cuisine: "Japanese", phone: "203-488-8833" },
+  { name: "Apples Etc.", cuisine: "Confections", phone: "203-208-5220" },
   { name: "Archie Moore's", cuisine: "American", phone: "203-481-6100" },
   { name: "Arturo's Restaurant", cuisine: "Italian & Mexican", phone: "203-208-4106" },
   { name: "Benny J's Pizza", cuisine: "Pizza", phone: "203-208-2409" },
@@ -936,6 +942,7 @@ const restaurants = [
   { name: "Burger King", cuisine: "Fast Food", phone: "203-208-2816" },
   { name: "Cafe Fiore", cuisine: "Italian", phone: "203-208-4690" },
   { name: "Capone's Pizza Bar", cuisine: "Pizza", phone: "203-488-2900" },
+  { name: "Cheri's Bakery", cuisine: "Confections", phone: "203-488-1755" },
   { name: "China Garden", cuisine: "Chinese", phone: "203-488-8861" },
   { name: "Chipotle Mexican Grill", cuisine: "Mexican", phone: "203-315-1506" },
   { name: "Common Grounds", cuisine: "Cafe", phone: "203-488-2326" },
@@ -945,7 +952,6 @@ const restaurants = [
   { name: "Dockside Seafood & Grill", cuisine: "Seafood", phone: "203-488-3007" },
   { name: "Doma on Main", cuisine: "Italian", phone: "203-208-0828" },
   { name: "Domino's", cuisine: "Pizza", phone: "203-488-6200" },
-  { name: "Donut Crazy", cuisine: "Cafe", phone: "203-488-7911" },
   { name: "Drea's by Goodfellas", cuisine: "Italian", phone: "203-483-5599" },
   { name: "Dunkin'", cuisine: "Fast Food", phone: "203-481-1434" },
   { name: "Eli's on the Hill", cuisine: "American", phone: "203-488-2700" },
@@ -1002,6 +1008,8 @@ const restaurants = [
   { name: "Sky Diner", cuisine: "American", phone: "203-315-7077" },
   { name: "Stony Creek Market", cuisine: "American", phone: "203-488-0145" },
   { name: "Subway", cuisine: "Fast Food", phone: "203-488-6902" },
+  { name: "Sweet Creations", cuisine: "Confections", phone: "203-488-9526" },
+  { name: "Sweets on Main", cuisine: "Confections", phone: "203-208-0317" },
   { name: "Sushi Burrific", cuisine: "Japanese", phone: "203-208-4918" },
   { name: "Taco Bell", cuisine: "Fast Food", phone: "203-483-8801" },
   { name: "Takumi Sushi Ramen & Lounge", cuisine: "Japanese", phone: "203-208-1207" },
@@ -1032,7 +1040,7 @@ function renderRestaurants() {
 
   // Filter by cuisine
   if (currentFilter !== 'all') {
-    filtered = filtered.filter(r => r.cuisine === currentFilter || r.cuisine.includes(currentFilter));
+    filtered = filtered.filter(r => r.cuisine === currentFilter || r.cuisine.includes(currentFilter) || (currentFilter === 'Cafe' && r.cuisine === 'Confections'));
   }
 
   // Filter by search
